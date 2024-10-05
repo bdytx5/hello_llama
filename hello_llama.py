@@ -9,8 +9,8 @@ from transformers import AutoTokenizer
 from llama import ModelArgs, Transformer
 
 
-perform_training = True
-
+perform_training = False
+# weights_dir = "/home/brett/Desktop/weights/meta-llama/Llama-3.2-1B/original/"
 
 # Define the model configuration parameters
 model_args = ModelArgs(
@@ -47,14 +47,14 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load the state dictionary from the checkpoint file
 # Set the checkpoint and tokenizer paths
-# checkpoint_path = os.path.expanduser("~/Desktop/weights/meta-llama/Llama-3.2-1B/original/consolidated.00.pth")
-# state_dict = torch.load(checkpoint_path, map_location=device)  # Load to the appropriate device
+checkpoint_path = os.path.expanduser("~/Desktop/weights/meta-llama/Llama-3.2-1B/original/consolidated.00.pth")
+state_dict = torch.load(checkpoint_path, map_location='cpu')  # Load to the appropriate device
 
 # Instantiate the Transformer model with the provided configuration and move it to the appropriate device
 model = Transformer(model_args).to(device)
 
 # Load the weights into the instantiated model
-# model.load_state_dict(state_dict, strict=False)
+model.load_state_dict(state_dict, strict=False)
 
 # Set the model to training mode (to enable gradient calculation)
 model.train()
